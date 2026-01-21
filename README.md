@@ -1,8 +1,8 @@
-# Restaurant Recommendation System
+# Employee System
 
-This project is a cloud-native restaurant recommendation system deployed on Azure. The system manages a list of restaurants and their properties (e.g., address, style, vegetarian options, opening hours, deliveries, etc.). It provides an API to query the list based on specific criteria and returns a recommendation for a restaurant that meets the criteria, including checking if it is open at the time of the request.
+This project is a cloud-native employee system deployed on Azure. The system manages a list of employees and their properties. It provides an API to query the list and a UI to display it.
 
-![image](https://github.com/rivkyschon/restaurant-recommendation-system/assets/113901370/6764fd3c-2b38-47d3-9cea-b9fd172fdbfa)
+![image](./employee-system.png)
 
 ## Table of Contents
 - [Features](#features)
@@ -15,9 +15,8 @@ This project is a cloud-native restaurant recommendation system deployed on Azur
 - [CI/CD Pipeline](#cicd-pipeline)
 
 ## Features
-- Manage a list of restaurants with various properties.
-- Query the list based on criteria such as style, vegetarian options, and opening hours.
-- Return a JSON object with the recommended restaurant and its properties.
+- Manage a list of employees with various properties.
+- Return a JSON object with the employee and its properties.
 - Log all requests and responses securely.
 
 ## Architecture
@@ -25,7 +24,7 @@ The system is designed to be cloud-native with minimal maintenance requirements.
 
 ### Components
 - **API Service**: A Python-based API hosted on Azure App Service.
-- **Database**: Azure Cosmos DB for storing restaurant data and request history.
+- **Database**: Azure Cosmos DB for storing employee data.
 - **Networking**: Azure Virtual Network with subnets for secure communication between services.
 - **Monitoring**: Application Insights for monitoring and logging.
 - **Key Vault**: For secure storage of sensitive data such as connection strings.

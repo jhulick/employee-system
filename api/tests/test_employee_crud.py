@@ -1,16 +1,16 @@
 import pytest
 from datetime import time, datetime
-from app.crud.restaurants_crud import create_restaurant, get_recommended_restaurant
-from app.schemas.restaurant_schemas import RestaurantCreate, RestaurantRequest
+from app.crud.employees_crud import create_employee, get_recommended_employee
+from app.schemas.employee_schemas import EmployeeCreate, EmployeeRequest
 
 
 @pytest.fixture
-def new_restaurant():
+def new_employee():
     """
-    Fixture to create a new RestaurantCreate object for testing.
+    Fixture to create a new employeeCreate object for testing.
     """
-    return RestaurantCreate(
-        name="Test Restaurant",
+    return EmployeeCreate(
+        name="Test Employee",
         style="Test Style",
         address="Test Address",
         vegetarian=True,
@@ -20,66 +20,66 @@ def new_restaurant():
 
 
 @pytest.fixture
-def restaurant_request():
+def employee_request():
     """
-    Fixture to create a RestaurantRequest object for testing recommendations.
+    Fixture to create a EmployeeRequest object for testing recommendations.
     """
-    return RestaurantRequest(
+    return EmployeeRequest(
         style="Test Style",
         vegetarian=True,
         open_now=True
     )
 
 
-def test_create_restaurant(test_db, new_restaurant):
+def test_create_employee(test_db, new_employee):
     """
-    Test case for creating a new restaurant in the database.
+    Test case for creating a new employee in the database.
     """
-    collection = test_db.get_collection("restaurants")
-    created_restaurant = create_restaurant(collection, new_restaurant)
-    assert created_restaurant["name"] == new_restaurant.name
-    assert created_restaurant["style"] == new_restaurant.style
+    collection = test_db.get_collection("employees")
+    created_employee = create_employee(collection, new_employee)
+    assert created_employee["name"] == new_employee.name
+    assert created_employee["style"] == new_employee.style
 
 
-def test_create_restaurant_duplicate(test_db, new_restaurant):
+def test_create_employee_duplicate(test_db, new_employee):
     """
-    Test case for creating a duplicate restaurant in the database.
+    Test case for creating a duplicate employee in the database.
     """
-    collection = test_db.get_collection("restaurants")
-    create_restaurant(collection, new_restaurant)
+    collection = test_db.get_collection("employees")
+    create_employee(collection, new_employee)
     with pytest.raises(Exception):
-        create_restaurant(collection, new_restaurant)
+        create_employee(collection, new_employee)
 
 
-def test_get_recommended_restaurant(test_db, new_restaurant, restaurant_request):
+def test_get_recommended_employee(test_db, new_employee, employee_request):
     """
-    Test case for getting a recommended restaurant from the database.
+    Test case for getting a recommended employee from the database.
     """
-    collection = test_db.get_collection("restaurants")
-    create_restaurant(collection, new_restaurant)
+    collection = test_db.get_collection("employees")
+    create_employee(collection, new_employee)
 
-    recommended_restaurant = get_recommended_restaurant(collection, restaurant_request)
-    assert recommended_restaurant["name"] == new_restaurant.name
-    assert recommended_restaurant["style"] == new_restaurant.style
+    recommended_employee = get_recommended_employee(collection, employee_request)
+    assert recommended_employee["name"] == new_employee.name
+    assert recommended_employee["style"] == new_employee.style
 
 
-def test_get_recommended_restaurant_no_match(test_db, restaurant_request):
+def test_get_recommended_employee_no_match(test_db, employee_request):
     """
-    Test case for getting a recommended restaurant with no matching restaurant in the database.
+    Test case for getting a recommended employee with no matching employee in the database.
     """
-    collection = test_db.get_collection("restaurants")
-    recommended_restaurant = get_recommended_restaurant(collection, restaurant_request)
-    assert recommended_restaurant is None
+    collection = test_db.get_collection("employees")
+    recommended_employee = get_recommended_employee(collection, employee_request)
+    assert recommended_employee is None
 
 
-def test_get_recommended_restaurant_invalid_time(test_db, new_restaurant):
+def test_get_recommended_employee_invalid_time(test_db, new_employee):
     """
-    Test case for getting a recommended restaurant with invalid time.
+    Test case for getting a recommended employee with invalid time.
     """
-    collection = test_db.get_collection("restaurants")
-    create_restaurant(collection, new_restaurant)
+    collection = test_db.get_collection("employees")
+    create_employee(collection, new_employee)
 
-    request = RestaurantRequest(
+    request = EmployeeRequest(
         style="Test Style",
         vegetarian=True,
         open_now=True
@@ -87,7 +87,7 @@ def test_get_recommended_restaurant_invalid_time(test_db, new_restaurant):
 
     # Manually change the current time to be outside of the open hours
     request.open_now = True
-    request.current_time = "23:00"  # Restaurant closes at 22:00
+    request.current_time = "23:00"  # employee closes at 22:00
 
-    recommended_restaurant = get_recommended_restaurant(collection, request)
-    assert recommended_restaurant is None
+    recommended_employee = get_recommended_employee(collection, request)
+    assert recommended_employee is None

@@ -27,7 +27,7 @@ resource "azurerm_resource_group" "rg" {
 # User-Assinged Managed Identity (shared)
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_user_assigned_identity" "app_identity" {
-  name                = "restaurant-app-identity"
+  name                = "employee-app-identity"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 }
@@ -36,7 +36,7 @@ resource "azurerm_user_assigned_identity" "app_identity" {
 # Deploy Vnet and Subnets
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_virtual_network" "main" {
-  name                = "restaurant-rec-vnet"
+  name                = "employee-rec-vnet"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name

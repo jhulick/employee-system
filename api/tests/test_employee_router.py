@@ -1,14 +1,13 @@
 import pytest
-from app.schemas.restaurant_schemas import RestaurantCreate, RestaurantRequest
-
+from app.schemas.employee_schemas import EmployeeCreate, EmployeeRequest
 
 @pytest.fixture
-def new_restaurant():
+def new_employee():
     """
-    Fixture to create a new restaurant object for testing.
+    Fixture to create a new employee object for testing.
     """
     return {
-        "name": "Test Restaurant",
+        "name": "Test employee",
         "style": "Test Style",
         "address": "Test Address",
         "vegetarian": True,
@@ -16,11 +15,10 @@ def new_restaurant():
         "close_hour": "22:00"
     }
 
-
 @pytest.fixture
-def restaurant_request():
+def employee_request():
     """
-    Fixture to create a restaurant request object for testing recommendations.
+    Fixture to create a employee request object for testing recommendations.
     """
     return {
         "style": "Test Style",
@@ -29,51 +27,51 @@ def restaurant_request():
     }
 
 
-def test_add_restaurant(test_app, test_db, new_restaurant):
+def test_add_employee(test_app, test_db, new_employee):
     """
-    Test case for adding a new restaurant.
+    Test case for adding a new employee.
     """
-    response = test_app.post("/restaurants", json=new_restaurant)
+    response = test_app.post("/employees", json=new_employee)
     assert response.status_code == 200
     data = response.json()
-    assert data["name"] == new_restaurant["name"]
-    assert data["style"] == new_restaurant["style"]
+    assert data["name"] == new_employee["name"]
+    assert data["style"] == new_employee["style"]
 
 
-def test_add_restaurant_invalid_data(test_app):
+def test_add_employee_invalid_data(test_app):
     """
-    Test case for adding a new restaurant with invalid data.
+    Test case for adding a new employee with invalid data.
     """
-    invalid_restaurant = {
-        "name": "Invalid Restaurant",
+    invalid_employee = {
+        "name": "Invalid employee",
         "style": "Invalid Style",
         "address": "Invalid Address",
         "vegetarian": "Yes",  # Should be a boolean
         "open_hour": "10:00",
         "close_hour": "22:00"
     }
-    response = test_app.post("/restaurants", json=invalid_restaurant)
+    response = test_app.post("/employees", json=invalid_employee)
     assert response.status_code == 422
 
 
-def test_get_recommendation(test_app, test_db, new_restaurant, restaurant_request):
+def test_get_recommendation(test_app, test_db, new_employee, employee_request):
     """
-    Test case for getting a restaurant recommendation.
+    Test case for getting a employee recommendation.
     """
-    # First, add a restaurant to the database
-    test_app.post("/restaurants", json=new_restaurant)
+    # First, add a employee to the database
+    test_app.post("/employees", json=new_employee)
 
-    # Then, check for a restaurant recommendation
-    response = test_app.post("/recommendation", json=restaurant_request)
+    # Then, check for a employee recommendation
+    response = test_app.post("/recommendation", json=employee_request)
     assert response.status_code == 200
-    data = response.json()["restaurantRecommendation"]
-    assert data["name"] == new_restaurant["name"]
-    assert data["style"] == new_restaurant["style"]
+    data = response.json()["employeeRecommendation"]
+    assert data["name"] == new_employee["name"]
+    assert data["style"] == new_employee["style"]
 
 
 def test_get_recommendation_no_match(test_app):
     """
-    Test case for getting a restaurant recommendation with no matching restaurant.
+    Test case for getting a employee recommendation with no matching employee.
     """
     request = {
         "style": "Nonexistent Style",
@@ -82,12 +80,12 @@ def test_get_recommendation_no_match(test_app):
     }
     response = test_app.post("/recommendation", json=request)
     assert response.status_code == 404
-    assert response.json()["detail"] == "No matching restaurant found"
+    assert response.json()["detail"] == "No matching employee found"
 
 
 def test_get_recommendation_invalid_data(test_app):
     """
-    Test case for getting a restaurant recommendation with invalid data.
+    Test case for getting a employee recommendation with invalid data.
     """
     invalid_request = {
         "style": "Test Style",

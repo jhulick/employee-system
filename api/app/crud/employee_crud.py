@@ -1,13 +1,13 @@
 from datetime import datetime
 
 
-def get_recommended_restaurant(collection, request):
+def get_employees(collection, request):
     """
-    Fetches a recommended restaurant based on the given request criteria.
+    Fetches employees based on the given request criteria.
 
-    :param collection: MongoDB's collection of restaurants.
+    :param collection: MongoDB's collection of employees.
     :param request: Request object containing search criteria.
-    :return: Recommended restaurant or None if no match found.
+    :return: Recommended employee or None if no match found.
     """
     query = {}
     if request.style:
@@ -22,21 +22,21 @@ def get_recommended_restaurant(collection, request):
     return collection.find_one(query)
 
 
-def create_restaurant(collection, restaurant):
+def create_employee(collection, employee):
     """
-    Creates a new restaurant entry in the database.
+    Creates a new employee entry in the database.
 
-    :param collection: MongoDB's collection of restaurants.
-    :param restaurant: Restaurant object containing restaurant details.
-    :return: Created restaurant without the MongoDB ID field.
+    :param collection: MongoDB's collection of employees.
+    :param employee: Employee object containing employee details.
+    :return: Created employee without the MongoDB ID field.
     """
-    new_restaurant = {
-        "name": restaurant.name,
-        "style": restaurant.style,
-        "address": restaurant.address,
-        "vegetarian": restaurant.vegetarian,
-        "open_hour": restaurant.open_hour,
-        "close_hour": restaurant.close_hour
+    new_employee = {
+        "name": employee.name,
+        "style": employee.style,
+        "address": employee.address,
+        "vegetarian": employee.vegetarian,
+        "open_hour": employee.open_hour,
+        "close_hour": employee.close_hour
     }
-    result = collection.insert_one(new_restaurant)
+    result = collection.insert_one(new_employee)
     return collection.find_one({"_id": result.inserted_id}, {'_id': 0})

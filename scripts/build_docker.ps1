@@ -19,7 +19,7 @@ Set-Location -Path "..\api"
 
 # Build Docker image
 Write-Output "Building Docker image..."
-docker build -t restaurant-recommendation-system:latest .
+docker build -t employee-system:latest .
 if ($?) {
     Write-Output "Docker image built successfully."
 } else {
@@ -29,12 +29,12 @@ if ($?) {
 
 # Stop and remove existing container
 Write-Output "Stopping existing Docker container..."
-docker stop restaurant-recommendation-system
-docker rm restaurant-recommendation-system
+docker stop employee-system
+docker rm employee-system
 
 # Run new Docker container
 Write-Output "Running new Docker container..."
-docker run -d -p 5000:5000 --name restaurant-recommendation-system restaurant-recommendation-system:latest
+docker run -d -p 5000:5000 --name employee-system employee-system:latest
 if ($?) {
     Write-Output "New Docker container is running successfully."
 } else {

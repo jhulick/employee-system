@@ -1,7 +1,7 @@
 import pytest
 from datetime import time, datetime
-from app.crud.restaurants_crud import create_restaurant, get_recommended_restaurant
-from app.schemas.restaurant_schemas import RestaurantCreate, RestaurantRequest
+from app.crud.employees_crud import create_employee, get_recommended_employee
+from app.schemas.employee_schemas import EmployeeCreate, EmployeeRequest
 
 
 @pytest.fixture
@@ -10,7 +10,7 @@ def new_employee():
     Fixture to create a new EmployeeCreate object for testing.
     """
     return EmployeeCreate(
-        name="Test Restaurant",
+        name="Test employee",
         style="Test Style",
         address="Test Address",
         vegetarian=True,
@@ -36,12 +36,12 @@ def test_create_employee(test_db, new_employee):
     Test case for creating a new employee in the database.
     """
     collection = test_db.get_collection("employees")
-    created_employee = create_employee(collection, new_restaurant)
+    created_employee = create_employee(collection, new_employee)
     assert created_employee["name"] == new_employee.name
     assert created_employee["style"] == new_employee.style
 
 
-def test_create_employee_duplicate(test_db, new_restaurant):
+def test_create_employee_duplicate(test_db, new_employee):
     """
     Test case for creating a duplicate employee in the database.
     """
