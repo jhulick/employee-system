@@ -1,26 +1,15 @@
 from datetime import datetime
 
 
-def get_employees(collection, request):
+def get_employees(collection):
     """
     Fetches employees based on the given request criteria.
 
     :param collection: MongoDB's collection of employees.
-    :param request: Request object containing search criteria.
-    :return: Recommended employee or None if no match found.
+    :return: Employees or no matches found.
     """
-    query = {}
-    if request.style:
-        query["style"] = request.style
-    if request.vegetarian is not None:
-        query["vegetarian"] = request.vegetarian
-    if request.open_now:
-        current_time = str(datetime.now().time())
-        query["open_hour"] = {"$lte": current_time}
-        query["close_hour"] = {"$gte": current_time}
 
-    return collection.find_one(query)
-
+    return collection.all()
 
 def create_employee(collection, employee):
     """
@@ -32,11 +21,10 @@ def create_employee(collection, employee):
     """
     new_employee = {
         "name": employee.name,
-        "style": employee.style,
-        "address": employee.address,
-        "vegetarian": employee.vegetarian,
-        "open_hour": employee.open_hour,
-        "close_hour": employee.close_hour
+        "image": employee.image,
+        "department": employee.department,
+        "email": employee.email,
+        "phone": employee.phone
     }
     result = collection.insert_one(new_employee)
     return collection.find_one({"_id": result.inserted_id}, {'_id': 0})
