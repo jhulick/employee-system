@@ -68,7 +68,7 @@ To deploy the system, follow these steps:
 To query the API, send a GET request to the API endpoint with the desired criteria. Example:
 
 ```sh
-curl -X GET "https://<your_api_endpoint>/recommendation?style=Italian&vegetarian=yes&open_now=true"
+curl -X GET "https://<your_api_endpoint>/employees"
 ```
 
 ## Security Considerations

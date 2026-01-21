@@ -54,43 +54,5 @@ def test_add_employee_invalid_data(test_app):
     assert response.status_code == 422
 
 
-def test_get_recommendation(test_app, test_db, new_employee, employee_request):
-    """
-    Test case for getting a employee recommendation.
-    """
-    # First, add a employee to the database
-    test_app.post("/employees", json=new_employee)
-
-    # Then, check for a employee recommendation
-    response = test_app.post("/recommendation", json=employee_request)
-    assert response.status_code == 200
-    data = response.json()["employeeRecommendation"]
-    assert data["name"] == new_employee["name"]
-    assert data["style"] == new_employee["style"]
 
 
-def test_get_recommendation_no_match(test_app):
-    """
-    Test case for getting a employee recommendation with no matching employee.
-    """
-    request = {
-        "style": "Nonexistent Style",
-        "vegetarian": False,
-        "open_now": True
-    }
-    response = test_app.post("/recommendation", json=request)
-    assert response.status_code == 404
-    assert response.json()["detail"] == "No matching employee found"
-
-
-def test_get_recommendation_invalid_data(test_app):
-    """
-    Test case for getting a employee recommendation with invalid data.
-    """
-    invalid_request = {
-        "style": "Test Style",
-        "vegetarian": "Yes",  # Should be a boolean
-        "open_now": True
-    }
-    response = test_app.post("/recommendation", json=invalid_request)
-    assert response.status_code == 422
